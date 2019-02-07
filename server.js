@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var port = process.env.port || 8081;
-
+var cors = require('cors');
 var ajaxUtilities = require('./src/ajax-utilities');
 
 /**
@@ -28,12 +28,11 @@ function requestHandler(req, res){
 		}
 	}
 }
-
+app.use(cors());
 app.get('/schematronValidator/:fn', requestHandler);
 app.post('/schematronValidator/:fn', requestHandler);
-
 server.listen(port, function(){
   console.log('server listening on port: %d', port);
 });
 
-app.use(express.static(__dirname));
+

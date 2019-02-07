@@ -1,17 +1,20 @@
 var ns = {};
-var fs = require('file-system');
+var fs = require('fs');
 var xml2js = require('xml2js');
 var Issue =  require('./Issue').Issue;
 var libxslt = require('libxslt');
-ns.doValidation = function(file) {
+var SchematronValidation = function(file) {
+	this.file 	= file;
+};
+SchematronValidation.isValid = function(file) {
 	try {
 		var isoContent=fs.readFileSync('template.xslt', 'utf8');
 		var stylesheet2 =libxslt.parse(isoContent);
-		file = file.replace('libsbgn/0.3', 'libsbgn/0.2');
 		var resultDocument2 = stylesheet2.apply(file);
+		console.log(resultDocument2);
 		 xml2js.parseString(resultDocument2, function (err, result) {
         		resultDocument2 = result;
-    		})
+    		});
 		var errors = [];
 		if(resultDocument2["svrl:schematron-output"]["svrl:failed-assert"] == undefined)
 			return errors;
@@ -31,4 +34,5 @@ ns.doValidation = function(file) {
 		return false;
 	}	
 }
+ns.SchematronValidation = SchematronValidation;
 module.exports = ns;

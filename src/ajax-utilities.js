@@ -14,7 +14,7 @@ var querystring = require('querystring');
 /**
  * 100MB limit to map size, to avoid potential flood.
  */
-exports.isValid = function (req, res) {
+exports.doValidation = function (req, res) {
 	var file;
 	// passing the entire map for validation is too big to use GET request. POST should be prefered.
 	if(req.method == 'POST') {
@@ -22,16 +22,16 @@ exports.isValid = function (req, res) {
 		req.on('data', function (data) {
 			body += data;
 		});
-
+                console.log(body);
 		req.on('end', function () {
 			var post = querystring.parse(body);
 			file = post.file;
-			res.send(schematronValidator.isValid(file));
+			res.send(schematronValidator.doValidation(file));
 		});
 	}
 	else if(req.method == 'GET') {
 		file = req.query.file;
-		res.send(schematronValidator.isValid(file));
+		res.send(schematronValidator.doValidation(file));
 	}
 
 	
