@@ -21,7 +21,7 @@ npm start
 
 ## Schematron Validation Example 
 
-```
+```javascript
 var fs = require('file-system');
 var file=fs.readFileSync('path-of-validated-file', 'utf8');
  var errors = []; 
